@@ -7,7 +7,9 @@ export default function UserDetailPage() {
   const { id } = useParams();
   const { data: user } = useQuery({ queryKey: ["user", id], queryFn: () => getUserById(id as string) });
 
-  if (!user) return <p>Loading...</p>;
+  if (!user){
+    return <p>Loading...</p>
+  } ;
 
   return (
     <div className="p-4 space-y-2">
@@ -15,6 +17,7 @@ export default function UserDetailPage() {
       <p><strong>Name:</strong> {user.name}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Phone:</strong> {user.phone}</p>
+      
     </div>
   );
 }
