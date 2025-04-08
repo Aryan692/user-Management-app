@@ -4,11 +4,14 @@ import { User } from "@/models/user";
 
 import { NextResponse } from "next/server";
 
-// GET single user
+
+
+
+
 export async function GET(req: Request, context: { params: { id: string } }) {
   await connectDB();
 
-  const { id } = await context.params; // ✅ FIXED HERE
+  const { id } = await context.params; 
 
   try {
     const user = await User.findById(id);
@@ -21,11 +24,11 @@ export async function GET(req: Request, context: { params: { id: string } }) {
   }
 }
 
-// UPDATE user
+
 export async function PUT(req: Request, context: { params: { id: string } }) {
   await connectDB();
 
-  const { id } = await context.params; // ✅ FIXED HERE
+  const { id } = await context.params; 
   const body = await req.json();
 
   try {
@@ -36,11 +39,11 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
   }
 }
 
-// DELETE user
+
 export async function DELETE(req: Request, context: { params: { id: string } }) {
   await connectDB();
 
-  const { id } = await context.params; // ✅ FIXED HERE
+  const { id } = await context.params; 
 
   try {
     await User.findByIdAndDelete(id);
