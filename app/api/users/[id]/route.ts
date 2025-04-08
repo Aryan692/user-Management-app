@@ -1,14 +1,17 @@
+// app/api/users/[id]/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
 
-
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+// GET user by ID
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
   await connectDB();
 
+  const { id } = context.params;
+
   try {
-    const user = await User.findById(params.id);
+    const user = await User.findById(id);
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -16,16 +19,18 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Error fetching user" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to fetch user" }, { status: 500 });
   }
 }
 
-
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+// DELETE user by ID
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
   await connectDB();
 
+  const { id } = context.params;
+
   try {
-    const deletedUser = await User.findByIdAndDelete(params.id);
+    const deletedUser = await User.findByIdAndDelete(id);
 
     if (!deletedUser) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -33,18 +38,20 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Error deleting user" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to delete user" }, { status: 500 });
   }
 }
 
-// PUT /api/users/:id
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+// PUT (update) user by ID
+export async function PUT(req: NextRequest, context: { params: { id: string } }) {
   await connectDB();
+
+  const { id } = context.params;
   const body = await req.json();
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
-      params.id,
+      id,
       {
         name: body.name,
         email: body.email,
@@ -59,6 +66,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Error updating user" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to update user" }, { status: 500 });
   }
 }
