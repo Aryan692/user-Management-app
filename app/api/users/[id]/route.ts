@@ -4,12 +4,12 @@ import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
 
 
-type Params ={
+// type Params ={
 
-  params :{
-    id: string,
-  }
-}
+//   params :{
+//     id: string,
+//   }
+// }
 
 
 export async function GET(req: Request) {
@@ -55,23 +55,23 @@ export async function DELETE(req: Request) {
   }
 }
 
-export async function PUT(req: Request, { params }: Params) {
-  await connectDB();
-  const body = await req.json();
+// export async function PUT(req: Request, { params }: Params) {
+//   await connectDB();
+//   const body = await req.json();
 
-  const updatedUser = await User.findByIdAndUpdate(
-    params.id,
-    {
-      name: body.name,
-      email: body.email,
-      phone: body.phone,
-    },
-    { new: true }
-  );
+//   const updatedUser = await User.findByIdAndUpdate(
+//     params.id,
+//     {
+//       name: body.name,
+//       email: body.email,
+//       phone: body.phone,
+//     },
+//     { new: true }
+//   );
 
-  if (!updatedUser) {
-    return NextResponse.json({ message: "User not found" }, { status: 404 });
-  }
+//   if (!updatedUser) {
+//     return NextResponse.json({ message: "User not found" }, { status: 404 });
+//   }
 
-  return NextResponse.json(updatedUser);
-}
+//   return NextResponse.json(updatedUser);
+// }
