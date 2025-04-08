@@ -1,66 +1,43 @@
-import { NextResponse } from "next/server";
-
+// app/api/users/[id]/route.ts
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
+import { type NextApiResponse } from "next";
 
 
-
-type Params = {
+type Context = {
   params: {
     id: string;
   };
 };
 
-
-export async function GET(req: Request) {
-  try {
-    await connectDB();
-
-    const url = new URL(req.url); 
-    const id = url.pathname.split("/").pop(); 
-
-    const user = await User.findById(id);
-
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(user);
-  } catch (error) {
-    console.error("GET /api/users/[id] error:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
-  }
-}
-
-//
-
-
-export async function DELETE(req: Request) {
-  try {
-    await connectDB();
-
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
-
-    const user = await User.findByIdAndDelete(id);
-
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: "User deleted successfully" });
-  } catch (error) {
-    console.error("DELETE /api/users/[id] error:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
-  }
-}
-
-export async function PUT(req: Request, { params }:  Params) {
+export async function GET(req: NextRequest, context: Context) {
   await connectDB();
+  const { id } = context.params;
+
+  const user = await User.findById(id);
+  if (!user) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(user);
+}
+
+export async function DELETE(req: NextRequest, context: Context) {
+  await connectDB();
+  const { id } = context.params;
+
+  await User.findByIdAndDelete(id);
+  return NextResponse.json({ message: "User deleted successfully" });
+}
+
+export async function PUT(req: NextRequest, context: Context) {
+  await connectDB();
+  const { id } = context.params;
   const body = await req.json();
 
   const updatedUser = await User.findByIdAndUpdate(
-    params.id,
+    id,
     {
       name: body.name,
       email: body.email,
