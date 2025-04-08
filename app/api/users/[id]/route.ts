@@ -1,17 +1,22 @@
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
-
-
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 
 
 
+type Params = {
+  params: {
+    id: string;
+  };
+};
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+
+export async function GET(req: NextRequest, { params }: Params) {
   await connectDB();
 
-  const { id } = await context.params; 
+  const { id } = params;
 
   try {
     const user = await User.findById(id);
@@ -25,10 +30,10 @@ export async function GET(req: Request, context: { params: { id: string } }) {
 }
 
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: Params) {
   await connectDB();
 
-  const { id } = await context.params; 
+  const { id } = params;
   const body = await req.json();
 
   try {
@@ -40,10 +45,10 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
 }
 
 
-export async function DELETE(req: Request, context: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: Params) {
   await connectDB();
 
-  const { id } = await context.params; 
+  const { id } = params;
 
   try {
     await User.findByIdAndDelete(id);
