@@ -1,36 +1,36 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
 
-// GET /api/users/:id
-export async function GET({ params }: Params) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   await connectDB();
-  const { id } = params;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(params.id);
+
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
+
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error fetching user" }, { status: 500 });
   }
 }
 
-// DELETE /api/users/:id
-export async function DELETE(  { params }: Params) {
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   await connectDB();
-  const { id } = params;
 
   try {
-    await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(params.id);
+
+    if (!deletedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
     return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error deleting user" }, { status: 500 });
@@ -38,14 +38,13 @@ export async function DELETE(  { params }: Params) {
 }
 
 // PUT /api/users/:id
-export async function PUT(req: NextRequest, { params }: Params) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   await connectDB();
-  const { id } = params;
   const body = await req.json();
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
-      id,
+      params.id,
       {
         name: body.name,
         email: body.email,
