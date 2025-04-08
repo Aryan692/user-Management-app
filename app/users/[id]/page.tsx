@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { deleteUser, getUserById } from "@/lib/queries";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useParams  , useRouter} from "next/navigation";
+
 
 
 
