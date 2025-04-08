@@ -36,7 +36,7 @@ export default function UserTable() {
       cell: ({ row }) => (
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => router.push(`/users/${row.original._id}`)}>View</Button>
-          <Button variant="secondary" onClick={() => router.push(`/create-user?id=${row.original._id}`)}>Edit</Button>
+          {/* <Button variant="secondary" onClick={() => router.push(`/create-user?id=${row.original._id}`)}>Edit</Button> */}
           <Button variant="destructive" onClick={() => mutation.mutate(row.original._id)}>Delete</Button>
         </div>
       ),

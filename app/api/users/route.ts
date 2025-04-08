@@ -15,3 +15,10 @@ export async function POST(req: Request) {
   const user = await User.create(body);
   return NextResponse.json(user);
 }
+
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  await connectDB();
+  const body = await req.json();
+  const updatedUser = await User.findByIdAndUpdate(params.id, body, { new: true });
+  return NextResponse.json(updatedUser);
+}
