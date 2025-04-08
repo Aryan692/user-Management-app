@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/user";
 
-type Params = {
-  params : {
-    id: string;
-  };
-};
+// type Params = {
+//   params : {
+//     id: string;
+//   };
+// };
 
 export async function GET() {
   await connectDB();
@@ -21,9 +21,9 @@ export async function POST(req: Request) {
   return NextResponse.json(user);
 }
 
-export async function PUT(req: Request, { params } : Params) {
-  await connectDB();
-  const body = await req.json();
-  const updatedUser = await User.findByIdAndUpdate(params.id, body, { new: true });
-  return NextResponse.json(updatedUser);
-}
+// export async function PUT(req: Request, { params } : Params) {
+//   await connectDB();
+//   const body = await req.json();
+//   const updatedUser = await User.findByIdAndUpdate(params.id, body, { new: true });
+//   return NextResponse.json(updatedUser);
+// }
