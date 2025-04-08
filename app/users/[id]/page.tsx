@@ -5,7 +5,10 @@ import { useParams } from "next/navigation";
 
 export default function UserDetailPage() {
   const { id } = useParams();
-  const { data: user } = useQuery({ queryKey: ["user", id], queryFn: () => getUserById(id as string) });
+  const { data: user } = useQuery({
+     queryKey: ["user", id],
+     queryFn: () => getUserById(id as string) 
+    });
 
   if (!user){
     return <p>Loading...</p>
